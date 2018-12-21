@@ -517,11 +517,11 @@ extension UINavigationController {
  */
 extension UIAlertController {
     open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        return .portrait
+        return .allButUpsideDown
     }
-    
+
     open override var shouldAutorotate : Bool {
-        return false
+        return true
     }
 }
 
