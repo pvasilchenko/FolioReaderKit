@@ -244,13 +244,20 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             height: pageIndicatorHeight
         )
         switch orientation  {
-        case .portrait:
+        case .landscapeLeft, .landscapeRight:
            bounds = CGRect(
               x: 0,
-              y: screenBounds.size.height - (pageIndicatorHeight + bottomBarSpacer),
+              y: screenBounds.size.height - pageIndicatorHeight + bottomBarSpacer,
               width: screenBounds.size.width,
               height: pageIndicatorHeight
            )
+        case .portrait:
+          bounds = CGRect(
+             x: 0,
+             y: screenBounds.size.height - pageIndicatorHeight + 5,
+             width: screenBounds.size.width,
+             height: pageIndicatorHeight
+          )
         default:
            break
         }
@@ -1507,7 +1514,7 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
     
     func getScreenBounds() -> CGRect {
         var bounds = view.frame
-        bounds.size.height = bounds.size.height
+        bounds.size.height = bounds.size.height - bottomBarSpacer
       
         if #available(iOS 11.0, *) {
             bounds.size.height = bounds.size.height - view.safeAreaInsets.bottom
