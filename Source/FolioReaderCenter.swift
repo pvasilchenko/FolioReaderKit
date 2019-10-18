@@ -49,12 +49,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     /// The collection view with pages
     open var collectionView: UICollectionView!
-  open var bottomBarHeight: CGFloat = 0 {
-    didSet {
-      screenBounds = getScreenBounds()
-      collectionViewLayout.invalidateLayout()
-    }
-  }
+    open var contentInset: UIEdgeInsets  = UIEdgeInsets.zero
     
     let collectionViewLayout = UICollectionViewFlowLayout()
     var loadingView: UIActivityIndicatorView!
@@ -526,7 +521,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     override open func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         guard folioReader.isReaderReady else { return }
-
+      
+      switch toInterfaceOrientation {
+      case .portrait:
+        screenBounds = CGRect(x: 0.0, y: 0.0, width: screenBounds.width, height: screenBounds.height - 65.0)
+      default:
+        screenBounds = CGRect(x: 0.0, y: 0.0, width: screenBounds.width, height: screenBounds.height + 65.0)
+      }
+      
         setPageSize(toInterfaceOrientation)
         updateCurrentPage()
 
