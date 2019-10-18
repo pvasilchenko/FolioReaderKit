@@ -49,7 +49,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     /// The collection view with pages
     open var collectionView: UICollectionView!
-    open var contentInset: UIEdgeInsets  = UIEdgeInsets.zero
+    open var bottomBarSpacer: CGFloat = 0
     
     let collectionViewLayout = UICollectionViewFlowLayout()
     var loadingView: UIActivityIndicatorView!
@@ -236,7 +236,24 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     fileprivate func frameForPageIndicatorView() -> CGRect {
-        var bounds = CGRect(x: 0, y: screenBounds.size.height-pageIndicatorHeight, width: screenBounds.size.width, height: pageIndicatorHeight)
+        let orientation = UIDevice.current.orientation
+        var bounds = CGRect(
+            x: 0,
+            y: screenBounds.size.height - pageIndicatorHeight,
+            width: screenBounds.size.width,
+            height: pageIndicatorHeight
+        )
+        switch orientation  {
+        case .portrait:
+           bounds = CGRect(
+              x: 0,
+              y: screenBounds.size.height - (pageIndicatorHeight + bottomBarSpacer),
+              width: screenBounds.size.width,
+              height: pageIndicatorHeight
+           )
+        default:
+           break
+        }
         
         if #available(iOS 11.0, *) {
             bounds.size.height = bounds.size.height + view.safeAreaInsets.bottom
@@ -522,19 +539,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     override open func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         guard folioReader.isReaderReady else { return }
       
-      switch toInterfaceOrientation {
-      case .portrait:
-        screenBounds = CGRect(x: 0.0, y: 0.0, width: screenBounds.width, height: screenBounds.height - 65.0)
-      default:
-        screenBounds = CGRect(x: 0.0, y: 0.0, width: screenBounds.width, height: screenBounds.height + 65.0)
-      }
-      
         setPageSize(toInterfaceOrientation)
         updateCurrentPage()
 
         if self.currentOrientation == nil || (self.currentOrientation?.isPortrait != toInterfaceOrientation.isPortrait) {
             var pageIndicatorFrame = pageIndicatorView?.frame
-            pageIndicatorFrame?.origin.y = ((screenBounds.size.height < screenBounds.size.width) ? (self.collectionView.frame.height - pageIndicatorHeight) : (self.collectionView.frame.width - pageIndicatorHeight))
+            pageIndicatorFrame?.origin.y = self.collectionView.frame.width - pageIndicatorHeight
             pageIndicatorFrame?.origin.x = 0
             pageIndicatorFrame?.size.width = ((screenBounds.size.height < screenBounds.size.width) ? (self.collectionView.frame.width) : (self.collectionView.frame.height))
             pageIndicatorFrame?.size.height = pageIndicatorHeight
@@ -1497,7 +1507,7 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
     
     func getScreenBounds() -> CGRect {
         var bounds = view.frame
-        bounds.size.height = bounds.size.height - bottomBarHeight
+        bounds.size.height = bounds.size.height
       
         if #available(iOS 11.0, *) {
             bounds.size.height = bounds.size.height - view.safeAreaInsets.bottom
