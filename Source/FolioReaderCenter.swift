@@ -52,6 +52,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
   open var bottomBarHeight: CGFloat = 0 {
     didSet {
       screenBounds = getScreenBounds()
+      collectionViewLayout.invalidateLayout()
     }
   }
     
