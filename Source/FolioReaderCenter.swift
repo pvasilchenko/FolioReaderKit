@@ -49,6 +49,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     /// The collection view with pages
     open var collectionView: UICollectionView!
+  open var bottomBarHeight: CGFloat = 0 {
+    didSet {
+      screenBounds = getScreenBounds()
+    }
+  }
     
     let collectionViewLayout = UICollectionViewFlowLayout()
     var loadingView: UIActivityIndicatorView!
@@ -1489,7 +1494,8 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
     
     func getScreenBounds() -> CGRect {
         var bounds = view.frame
-        
+        bounds.size.height = bounds.size.height - bottomBarHeight
+      
         if #available(iOS 11.0, *) {
             bounds.size.height = bounds.size.height - view.safeAreaInsets.bottom
         }
