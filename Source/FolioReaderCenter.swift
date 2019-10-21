@@ -58,7 +58,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var tempFragment: String?
     var animator: ZFModalTransitionAnimator!
     var pageIndicatorView: FolioReaderPageIndicator?
-    var pageIndicatorHeight: CGFloat = 20
+    var pageIndicatorHeight: CGFloat = 10
     var recentlyScrolled = false
     var recentlyScrolledDelay = 2.0 // 2 second delay until we clear recentlyScrolled
     var recentlyScrolledTimer: Timer!
@@ -254,7 +254,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         case .portrait:
           bounds = CGRect(
              x: 0,
-             y: screenBounds.size.height - pageIndicatorHeight / 2,
+             y: screenBounds.size.height - pageIndicatorHeight,
              width: screenBounds.size.width,
              height: pageIndicatorHeight
           )
