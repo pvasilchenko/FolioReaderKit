@@ -254,7 +254,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         case .portrait:
           bounds = CGRect(
              x: 0,
-             y: screenBounds.size.height - pageIndicatorHeight + 5,
+             y: screenBounds.size.height - pageIndicatorHeight / 2,
              width: screenBounds.size.width,
              height: pageIndicatorHeight
           )
